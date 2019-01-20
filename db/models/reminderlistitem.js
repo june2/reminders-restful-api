@@ -2,9 +2,15 @@
 module.exports = (sequelize, DataTypes) => {
   var ReminderListItem = sequelize.define('ReminderListItem', {
     list_id: DataTypes.STRING,
-    name: DataTypes.STRING,
-    status: DataTypes.STRING,
-    created_at: DataTypes.DATE,
+    name: DataTypes.STRING,        
+    status: {
+      type: DataTypes.STRING,
+      defaultValue: 'to do'
+    },
+    created_at: {
+      type: DataTypes.DATE,
+      defaultValue: new Date()
+    },
     remind_at: DataTypes.DATE
   }, {});
   ReminderListItem.associate = function (models) {
