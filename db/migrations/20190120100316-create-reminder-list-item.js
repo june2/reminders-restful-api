@@ -10,7 +10,7 @@ module.exports = {
       },
       list_id: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.INTEGER
       },
       name: {
         allowNull: false,

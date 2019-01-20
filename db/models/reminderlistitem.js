@@ -1,7 +1,7 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   var ReminderListItem = sequelize.define('ReminderListItem', {
-    list_id: DataTypes.STRING,
+    list_id: DataTypes.INTEGER,
     name: DataTypes.STRING,        
     status: {
       type: DataTypes.STRING,

@@ -34,4 +34,17 @@ describe('API reminder_list', () => {
     });
   });  
 
+  describe('POST /api/reminder_list/:list_id', () => {
+    it('<201> reminder_list_item 정보 생성', async () => {
+      const res = await request
+        .post('/api/reminder_list/1/item')
+        .send({ name: 'ITEM1', "remind_at": "2018-11-11" })
+        .expect('Content-Type', /json/)
+        .expect(201);
+
+      const data = res.body;
+      const expected = ['name'];      
+      expect(Object.keys(data)).toEqual(expect.arrayContaining(expected));
+    });
+  });
 });
