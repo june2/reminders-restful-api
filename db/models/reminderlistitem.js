@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     created_at: DataTypes.DATE,
     remind_at: DataTypes.DATE
   }, {});
-  ReminderListItem.associate = function(models) {
+  ReminderListItem.associate = function (models) {
     // associations can be defined here
     ReminderListItem.belongsTo(models.ReminderList, {
       foreignKey: 'list_id'
