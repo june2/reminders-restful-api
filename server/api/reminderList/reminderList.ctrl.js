@@ -81,25 +81,25 @@ export default {
   },
   createItem: async (ctx, next) => {
     try {
-      let list_id = ctx.params.list_id;
-      let remind_at = ctx.request.body.remind_at;
+      let listId = ctx.params.list_id;
+      let remindAt = ctx.request.body.remind_at;
       let name = ctx.request.body.name;
       // check params
-      if (!list_id) {
+      if (!listId) {
         return ctx.res.unprocessableEntity({ data: 'error', message: 'list_id cannot be blank' });
       }
-      if (!remind_at) {
+      if (!remindAt) {
         return ctx.res.unprocessableEntity({ data: 'error', message: 'remind_at cannot be blank' });
       }
       if (!name) {
         return ctx.res.unprocessableEntity({ data: 'error', message: 'name cannot be blank' });
       }
       // check id
-      let reminderList = await models.ReminderList.findById(list_id);
+      let reminderList = await models.ReminderList.findById(listId);
       if (null == reminderList) {
         return ctx.res.notFound({ message: `ID ${id} not found` }); // if id not found
       }
-      let ReminderListItem = await models.ReminderListItem.create({ list_id: list_id, name: name, remind_at: remind_at });
+      let ReminderListItem = await models.ReminderListItem.create({ list_id: listId, name: name, remind_at: remindAt });
       return ctx.res.created({ data: { name: ReminderListItem.name } });
     } catch (e) {
       ctx.throw(500, e);
@@ -107,19 +107,18 @@ export default {
   },
   updateItem: async (ctx, next) => {
     try {
-      let list_id = ctx.params.list_id;
-      let item_id = ctx.params.item_id;
+      let itemId = ctx.params.item_id;
       let name = ctx.request.body.name;
-      let remind_at = ctx.request.body.remind_at;
+      let remindAt = ctx.request.body.remind_at;
       let status = ctx.request.body.status;
       let ENUM_STATUS = ['to do', 'completed']
       // check id
       let reminderListItems = await models.ReminderListItem.findOne({
         attributes: ['id', 'name', 'status', 'remind_at', 'created_at'],
-        where: { id: item_id }
+        where: { id: itemId }
       });
       if (null == reminderListItems) {
-        return ctx.res.notFound({ message: `ID ${item_id} not found` }); // if id not found
+        return ctx.res.notFound({ message: `ID ${itemId} not found` }); // if id not found
       }
       // update params
       if (name) {
@@ -128,8 +127,8 @@ export default {
       if (ENUM_STATUS.includes(status)) {        
         reminderListItems.status = status;
       }
-      if (remind_at) {
-        reminderListItems.remind_at = remind_at;
+      if (remindAt) {
+        reminderListItems.remind_at = remindAt;
       }
       reminderListItems.save();
       return ctx.res.ok({ data: reminderListItems });
@@ -138,16 +137,15 @@ export default {
     }
   },
   destroyItem: async (ctx, next) => {
-    try {
-      let list_id = ctx.params.list_id;
-      let item_id = ctx.params.item_id;
+    try {      
+      let itemId = ctx.params.item_id;
       // check id
       let reminderListItems = await models.ReminderListItem.findOne({
         attributes: ['id', 'name', 'status', 'remind_at', 'created_at'],
-        where: { id: item_id }
+        where: { id: itemId }
       });
       if (null == reminderListItems) {
-        return ctx.res.notFound({ message: `ID ${item_id} not found` }); // if id not found
+        return ctx.res.notFound({ message: `ID ${itemId} not found` }); // if id not found
       }
       // 실제 삭제하지는 않고 status를 deleted로 변경한다.
       reminderListItems.status = 'deleted';
