@@ -35,10 +35,10 @@ function responseHandler() {
       else if (!(ctx.status < 400))
         ctx.status = statusCodes.OK;
 
-      ctx.body = { status, data };
+      ctx.body = data;
     };
 
-    ctx.res.fail = ({ statusCode, code, data = null, message = null }) => {
+    ctx.res.fail = ({ statusCode, code, message = null }) => {
       const status = 'fail';
 
       if (!!statusCode && (statusCode >= 400 && statusCode < 500))
@@ -46,7 +46,7 @@ function responseHandler() {
       else if (!(ctx.status >= 400 && ctx.status < 500))
         ctx.status = statusCodes.BAD_REQUEST;
 
-      ctx.body = { status, code, data, message };
+      ctx.body = { status, code, message };
     };
 
     ctx.res.error = ({ statusCode, code, data = null, message = null }) => {

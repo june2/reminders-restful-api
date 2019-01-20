@@ -1,7 +1,7 @@
 'use strict';
 
 import Router from 'koa-router';
-// import user from './user';
+import reminderList from './reminderList';
 import pkginfo from '~.package.json';
 
 // 라우터 분리
@@ -18,6 +18,6 @@ let getApiInfo = ctx => {
 };
 
 api.get('/', getApiInfo);
-// api.use('/users', user.routes());
+api.use('/reminder_list', reminderList.routes());
 
 module.exports = api;

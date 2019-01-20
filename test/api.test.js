@@ -13,9 +13,8 @@ describe('Home', () => {
         .expect('Content-Type', /json/)
         .expect(200);
 
-      const { status, data } = res.body;
-      const expected = ['name', 'version', 'description', 'author'];
-      expect(status).toBe('success');
+      const data = res.body;
+      const expected = ['name', 'version', 'description', 'author'];     
       expect(data.name).toBe('reminder-restful-api');
       expect(Object.keys(data)).toEqual(expect.arrayContaining(expected));
     });
