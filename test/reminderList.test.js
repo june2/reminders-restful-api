@@ -16,7 +16,7 @@ describe('API reminder_list', () => {
         .expect(201);
 
       const data = res.body;
-      const expected = ['name'];      
+      const expected = ['name'];
       expect(Object.keys(data)).toEqual(expect.arrayContaining(expected));
     });
   });
@@ -28,11 +28,11 @@ describe('API reminder_list', () => {
         .expect('Content-Type', /json/)
         .expect(200);
 
-      const data = res.body;
-      const expected = ['id', 'name', 'created_at'];      
-      expect(Object.keys(data[0])).toEqual(expect.arrayContaining(expected));
+      const { lists } = res.body;
+      const expected = ['id', 'name', 'created_at'];
+      expect(Object.keys(lists[0])).toEqual(expect.arrayContaining(expected));
     });
-  });  
+  });
 
   describe('POST /api/reminder_list/:list_id', () => {
     it('<201> reminder_list_item 정보 생성', async () => {
@@ -43,8 +43,21 @@ describe('API reminder_list', () => {
         .expect(201);
 
       const data = res.body;
-      const expected = ['name'];      
+      const expected = ['name'];
       expect(Object.keys(data)).toEqual(expect.arrayContaining(expected));
+    });
+  });
+
+  describe('GET /api/reminder_list/:list_id', () => {
+    it('<200> reminder_list_item 정보 조회', async () => {
+      const res = await request
+        .get('/api/reminder_list/1/item')
+        .expect('Content-Type', /json/)
+        .expect(200);
+
+      const { items } = res.body;
+      const expected = ['id', 'name', 'status', 'remind_at', 'created_at'];
+      expect(Object.keys(items[0])).toEqual(expect.arrayContaining(expected));
     });
   });
 });
