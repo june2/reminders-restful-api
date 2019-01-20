@@ -18,10 +18,12 @@ export default {
   read: async (ctx, next) => {
     try {
       let reminderList = await models.ReminderList.findAll({
-        attributes: ['id', 'name', 'created_at'],
-        order: ['created_at']
+        attributes: ['id', 'name', 'created_at'],        
+        order: [
+          ['created_at', 'DESC'],          
+        ],
       });
-      return ctx.res.ok({ data: reminderList });
+      return ctx.res.ok({ data: {lists: reminderList} });
     } catch (e) {
       ctx.throw(500, e);
     }
@@ -67,11 +69,13 @@ export default {
       }
       let reminderListItems = await models.ReminderListItem.findAll({
         attributes: ['id', 'name', 'status', 'remind_at', 'created_at'],
-        order: ['created_at'],
+        order: [
+          ['created_at', 'DESC'],          
+        ],
         where: { list_id: id }
       });
-      return ctx.res.ok({ data: reminderListItems });
-    } catch (e) {
+      return ctx.res.ok({ data: {items:reminderListItems} });
+    } catch (e) { 
       ctx.throw(500, e);
     }
   },
@@ -145,6 +149,7 @@ export default {
       if (null == reminderListItems) {
         return ctx.res.notFound({ message: `ID ${item_id} not found` }); // if id not found
       }
+      // 실제 삭제하지는 않고 status를 deleted로 변경한다.
       reminderListItems.status = 'deleted';
       reminderListItems.save();
       return ctx.res.ok({ data: { status: reminderListItems.status } });
